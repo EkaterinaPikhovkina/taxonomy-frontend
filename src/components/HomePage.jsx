@@ -1,0 +1,67 @@
+import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+import HomePageHeader from './headers/HomePageHeader.jsx';
+import HomePageButton from './buttons/HomePageButton.jsx';
+import {clearRepository, importTaxonomyFromFile} from "../services/api.js";
+import ImportForm from "./forms/ImportForm.jsx";
+
+
+function HomePage() {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [showImportForm, setShowImportForm] = useState(false);
+
+    const handleCreateTaxonomy = async () => {
+        setLoading(true);
+        try {
+            await clearRepository();
+            console.log("Репозиторий очищен успешно");
+            navigate('/editor');
+
+        } catch (error) {
+            console.error("Ошибка при очистке репозитория:", error);
+            alert("Ошибка при очистке репозитория. Смотрите консоль.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleImport = async (file) => {
+        setLoading(true);
+        try {
+            await importTaxonomyFromFile(file);
+            console.log("Таксономія імпортована успішно");
+            setShowImportForm(false);
+
+        } catch (error) {
+            console.error("Помилка при імпорті таксономії:", error);
+            alert("Помилка при імпорті таксономії. Перевірте консоль.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div>
+            <HomePageHeader title="Taxonomy Builder" />
+            <div className="flex flex-col items-center justify-center gap-6 flex-1 self-stretch min-h-screen">
+                <HomePageButton
+                    onClick={handleCreateTaxonomy}
+                    disabled={loading}
+                >
+                    {loading ? "Очищення..." : "Створити нову таксономію"}
+                </HomePageButton>
+                <HomePageButton onClick={() => setShowImportForm(true)}>Імпортувати таксономію</HomePageButton>
+            </div>
+
+            <ImportForm
+                show={showImportForm}
+                onClose={() => setShowImportForm(false)}
+                onImport={handleImport}  // Передаємо функцію handleImport
+            />
+
+        </div>
+    );
+}
+
+export default HomePage;
