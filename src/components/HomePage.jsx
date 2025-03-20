@@ -29,8 +29,12 @@ function HomePage() {
     const handleImport = async (file) => {
         setLoading(true);
         try {
+            await clearRepository();
+            console.log("Репозиторій очищено перед імпортом");
+
             await importTaxonomyFromFile(file);
             console.log("Таксономія імпортована успішно");
+
             setShowImportForm(false);
 
         } catch (error) {
@@ -41,10 +45,11 @@ function HomePage() {
         }
     };
 
+
     return (
-        <div>
+        <div className="min-h-screen flex flex-col bg-white">
             <HomePageHeader title="Taxonomy Builder" />
-            <div className="flex flex-col items-center justify-center gap-6 flex-1 self-stretch min-h-screen">
+            <div className="flex flex-col items-center justify-center gap-6 flex-1">
                 <HomePageButton
                     onClick={handleCreateTaxonomy}
                     disabled={loading}
@@ -57,7 +62,7 @@ function HomePage() {
             <ImportForm
                 show={showImportForm}
                 onClose={() => setShowImportForm(false)}
-                onImport={handleImport}  // Передаємо функцію handleImport
+                onImport={handleImport}
             />
 
         </div>

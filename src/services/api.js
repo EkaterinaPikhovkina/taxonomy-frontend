@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { saveAs } from 'file-saver';
 
 const API_BASE_URL = 'http://127.0.0.1:8000/';
 
@@ -25,17 +26,33 @@ export const clearRepository = async () => {
 
 export const importTaxonomyFromFile = async (file) => {
     const formData = new FormData();
-    formData.append('file', file); // 'file' - назва поля, яке очікує backend
+    formData.append('file', file);
 
     try {
         const response = await axios.post(`${API_BASE_URL}import_taxonomy`, formData, {
             headers: {
-                'Content-Type': 'multipart/form-data', // Важливо для передачі файлів
+                'Content-Type': 'multipart/form-data',
             },
         });
-        return response.data; // Можна повертати успішне повідомлення або дані
+        return response.data;
     } catch (error) {
         console.error("Помилка при імпорті таксономії з файлу (axios):", error);
+        throw error;
+    }
+};
+
+export const exportTaxonomy = async (format) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}export_taxonomy?format=${format}`, {
+            responseType: 'blob',
+        });
+
+        const blob = response.data;
+        const filename = format === 'ttl' ? 'taxonomy.ttl' : 'taxonomy.rdf';
+        saveAs(blob, filename);
+
+    } catch (error) {
+        console.error("Помилка при експорті таксономії (axios):", error);
         throw error;
     }
 };
