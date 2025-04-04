@@ -25,11 +25,11 @@ function TreeView({ treeData, onSelect, loading }) {
     }
 
     if (!treeData || treeData.length === 0) {
-        return <div>Немає даних для відображення.</div>;
+        return <div className="pl-6">Немає даних для відображення.</div>;
     }
 
     return (
-        <div className="tree-view flex flex-col pl-6 gap-2">
+        <div className="flex flex-col pl-6 gap-2">
             {treeData.map((node) => (
                 <TreeNode
                     key={node.key}

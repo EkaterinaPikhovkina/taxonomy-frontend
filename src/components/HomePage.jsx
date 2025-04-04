@@ -6,7 +6,7 @@ import {clearRepository, importTaxonomyFromFile} from "../services/api.js";
 import ImportForm from "./forms/ImportForm.jsx";
 
 
-function HomePage() {
+function HomePage({ setTaxonomyData }) {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [showImportForm, setShowImportForm] = useState(false);
@@ -26,16 +26,21 @@ function HomePage() {
         }
     };
 
-    const handleImport = async (file) => {
+    const handleImport = async (file, taxonomySetter) => {
         setLoading(true);
         try {
             await clearRepository();
             console.log("Репозиторій очищено перед імпортом");
 
-            await importTaxonomyFromFile(file);
+            const importedData = await importTaxonomyFromFile(file);
             console.log("Таксономія імпортована успішно");
 
+            if (taxonomySetter) {
+                taxonomySetter([]);
+            }
+
             setShowImportForm(false);
+            navigate('/editor');
 
         } catch (error) {
             console.error("Помилка при імпорті таксономії:", error);
@@ -62,7 +67,8 @@ function HomePage() {
             <ImportForm
                 show={showImportForm}
                 onClose={() => setShowImportForm(false)}
-                onImport={handleImport}
+                onImport={(file) => handleImport(file, setTaxonomyData)}
+                setTaxonomyData={setTaxonomyData}
             />
 
         </div>

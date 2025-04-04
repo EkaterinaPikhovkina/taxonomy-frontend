@@ -56,3 +56,29 @@ export const exportTaxonomy = async (format) => {
         throw error;
     }
 };
+
+
+export const addConcept = async (conceptName, parentConceptUri) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}add_concept`, {
+            concept_name: conceptName,
+            parent_concept_uri: parentConceptUri
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Помилка при додаванні концепту (axios):", error);
+        throw error;
+    }
+};
+
+export const deleteConcept = async (conceptUri) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}delete_concept`, {
+            concept_uri: conceptUri
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Помилка при видаленні концепту (axios):", error);
+        throw error;
+    }
+};
