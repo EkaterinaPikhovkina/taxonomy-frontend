@@ -1,15 +1,18 @@
 import ConceptDetails from './ConceptDetails';
 import TreeView from "./visualisation/TreeView.jsx";
-import {useEffect, useState} from "react";
-import {fetchTaxonomyTree, exportTaxonomy} from '../services/api';
+import React, {useEffect, useState} from "react";
+import {fetchTaxonomyTree, exportTaxonomy, clearRepository} from '../services/api';
 import EditorHeader from "./headers/EditorHeader.jsx";
+import {useNavigate} from 'react-router-dom';
+import DefaultButton from "./buttons/DefaultButton.jsx";
 
 
-function TaxonomyEditor({taxonomyData, setTaxonomyData}) {
+function TaxonomyEditor({setTaxonomyData}) {
     const [selectedConcept, setSelectedConcept] = useState(null);
     const [treeData, setTreeData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [refreshTree, setRefreshTree] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadTaxonomy = async () => {
@@ -43,12 +46,6 @@ function TaxonomyEditor({taxonomyData, setTaxonomyData}) {
         setSelectedConcept(concept);
     };
 
-    useEffect(() => {
-        if (taxonomyData) {
-            //робимо щось, якщо потрібно оновити локальні дані. наприклад, скидаємо selectedConcept
-        }
-    }, [taxonomyData])
-
     const handleExport = async (format) => {
         try {
             await exportTaxonomy(format);
@@ -58,20 +55,38 @@ function TaxonomyEditor({taxonomyData, setTaxonomyData}) {
         }
     };
 
+    const handleClose = async () => {
+        try {
+            await clearRepository();
+            navigate('/');
+        } catch (error) {
+            console.error("Помилка при очищенні репозиторію:", error);
+            alert("Помилка при очищенні репозиторію. Перевірте консоль.");
+        }
+    };
+
     const refreshTaxonomyTree = () => {
         setRefreshTree(true);
     };
 
     return (
         <div className="h-screen flex flex-col bg-gray-100">
-            <EditorHeader onExport={handleExport}/>
+            <EditorHeader onExport={handleExport}
+                          onClose={handleClose}/>
             <div className="flex px-18 py-0 justify-center items-start gap-6 h-full">
-                <div className="flex flex-col justify-between items-start pt-8 bg-white flex-1 h-full">
+                <div className="flex flex-col items-start pt-8 bg-white flex-1 h-full">
                     <TreeView
                         treeData={treeData}
                         onSelect={handleConceptSelect}
                         loading={loading}
                     />
+                    <div className="sticky bottom-0 flex py-8 justify-center items-center self-stretch bg-white">
+                        <DefaultButton
+                            onClick={()=> {}}
+                        >
+                            Новий клас
+                        </DefaultButton>
+                    </div>
                 </div>
                 <ConceptDetails
                     concept={selectedConcept}

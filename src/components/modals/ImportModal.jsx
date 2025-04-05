@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import CloseIcon from "../icons/CloseIcon.jsx";
 import DefaultButton from "../buttons/DefaultButton.jsx";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
-function ImportForm({ show, onClose, onImport, setTaxonomyData }) {
+function ImportModal({show, onClose, onImport, setTaxonomyData}) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [error, setError] = useState('');
     const [fileNameText, setFileNameText] = useState("Обрати файл");
@@ -48,7 +48,10 @@ function ImportForm({ show, onClose, onImport, setTaxonomyData }) {
 
                 <div className="flex px-8 py-4 justify-between items-center self-stretch bg-blue">
                     <p className="text-white text-lg font-semibold leading-normal">Імпорт таксономії</p>
-                    <CloseIcon onClick={() => { onClose(); resetFileNameText(); }} />
+                    <CloseIcon className="w-4 h-4" onClick={() => {
+                        onClose();
+                        resetFileNameText();
+                    }}/>
                 </div>
 
                 <div className="flex p-6 flex-col items-start gap-6 self-stretch">
@@ -86,4 +89,4 @@ function ImportForm({ show, onClose, onImport, setTaxonomyData }) {
     );
 }
 
-export default ImportForm;
+export default ImportModal;

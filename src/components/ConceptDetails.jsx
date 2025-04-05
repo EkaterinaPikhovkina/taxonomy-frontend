@@ -3,6 +3,7 @@ import EditCircle from "./icons/EditCircle.jsx";
 import AddCircle from "./icons/AddCircle.jsx";
 import DeleteCircle from "./icons/DeleteCircle.jsx";
 import { addConcept, deleteConcept } from '../services/api';
+import DefaultButton from "./buttons/DefaultButton.jsx";
 
 
 function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
@@ -40,8 +41,8 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
         if (window.confirm(`Ви впевнені, що хочете видалити концепт '${concept.title}'?`)) {
             try {
                 await deleteConcept(concept.key);
-                refreshTaxonomyTree(); // Оновлюємо дерево після видалення
-                setSelectedConcept(null); // Clear selected concept after deletion
+                refreshTaxonomyTree();
+                setSelectedConcept(null);
                 alert(`Концепт '${concept.title}' успішно видалено.`);
             } catch (error) {
                 console.error("Помилка при видаленні концепту:", error);
@@ -57,18 +58,16 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
             </h2>
 
             <div className="flex items-start gap-4 self-stretch">
-                <button
-                    className="flex py-3 px-7 justify-center items-center gap-2.5 rounded-md bg-blue text-white font-semibold text-[18px] font-inter"
+                <DefaultButton
                     onClick={handleAddConcept}
                 >
-                    Новий концепт
-                </button>
-                <button
-                    className="flex py-3 px-7 justify-center items-center gap-2.5 rounded-md bg-blue text-white font-semibold text-[18px] font-inter"
+                    Новий субклас
+                </DefaultButton>
+                <DefaultButton
                     onClick={handleDeleteConcept}
                 >
-                    Видалити концепт
-                </button>
+                    Видалити клас
+                </DefaultButton>
             </div>
 
             <div className="flex p-4 flex-col items-start gap-4 self-stretch rounded-xl bg-gray-100">
@@ -88,7 +87,7 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
                         <p className="text-black font-normal text-base font-inter">Текст</p>
                     </div>
 
-                    <div className="flex items-center gap-1"> {/* Елемент 3: Контейнер з іконкою плюса в кружечку */}
+                    <div className="flex items-center gap-1">
                         <AddCircle className="w-5 h-5" />
                     </div>
                 </div>

@@ -1,9 +1,13 @@
 import React from 'react';
 
-function EditorHeaderButton({ children, onClick, icon: Icon, ...props }) {
+function EditorHeaderButton({ children, onClick, icon: Icon, iconClassName, ...props }) {
     return (
-        <button onClick={onClick} {...props} className="text-white font-inter text-lg font-normal flex items-center">
-            {Icon && <Icon className="mr-2" />}
+        <button
+            onClick={onClick}
+            {...props}
+            className="text-white font-inter text-lg font-normal flex items-center"
+        >
+            {Icon && <Icon className={`${iconClassName}`} />}
             {children}
         </button>
     );

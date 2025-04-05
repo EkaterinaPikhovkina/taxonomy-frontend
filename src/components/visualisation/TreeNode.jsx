@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FaChevronRight, FaChevronDown } from 'react-icons/fa';
+import ArrowRight from "../icons/ArrowRight.jsx";
+import ArrowDown from "../icons/ArrowDown.jsx";
 
 function TreeNode({ node, onSelect, level, expandedNodes, toggleNode, selectedNodeKey }) {
     const [isExpanded, setIsExpanded] = useState(expandedNodes.has(node.key));
@@ -26,7 +27,7 @@ function TreeNode({ node, onSelect, level, expandedNodes, toggleNode, selectedNo
             <div className="flex items-center gap-4 cursor-pointer">
                 {hasChildren && (
                     <span className="toggle-icon" onClick={handleToggle}>
-                    {isExpanded ? <FaChevronDown/> : <FaChevronRight/>}
+                    {isExpanded ? <ArrowDown className="w-6 h-3" /> : <ArrowRight className="w-3 h-6" />}
                 </span>
                 )}
                 <span
