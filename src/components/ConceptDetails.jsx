@@ -2,12 +2,14 @@ import React, {useState, useEffect} from 'react';
 import EditCircle from "./icons/EditCircle.jsx";
 import AddCircle from "./icons/AddCircle.jsx";
 import DeleteCircle from "./icons/DeleteCircle.jsx";
-import { addConcept, deleteConcept } from '../services/api';
+import {addSubConcept, deleteConcept} from '../services/api';
 import DefaultButton from "./buttons/DefaultButton.jsx";
+import NewSubConceptModal from "./modals/NewSubConceptModal.jsx";
 
 
 function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
     const [conceptName, setConceptName] = useState('');
+    const [showNewSubclassModal, setShowNewSubclassModal] = useState(false);
 
 
     useEffect(() => {
@@ -18,23 +20,26 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
         }
     }, [concept]);
 
+    const handleCreateSubclass = async (conceptData) => {
+        try {
+            await addSubConcept(conceptData.conceptName, concept.key);
+            await refreshTaxonomyTree();
+            alert(`Subclass '${conceptData.conceptName}' successfully added to '${concept.title}'`);
+        } catch (error) {
+            console.error("Error adding subclass:", error);
+            alert("Error adding subclass. Check console.");
+        } finally {
+            setShowNewSubclassModal(false);
+        }
+    };
+
     if (!concept) {
         return <div className="flex flex-col items-start gap-6 px-6 py-8 flex-1 h-full bg-white">
             Виберіть концепт для відображення деталей.</div>;
     }
 
     const handleAddConcept = async () => {
-        const newConceptName = prompt("Введіть назву нового концепту:");
-        if (newConceptName) {
-            try {
-                await addConcept(newConceptName, concept.key);
-                refreshTaxonomyTree(); // Оновлюємо дерево після додавання
-                alert(`Концепт '${newConceptName}' успішно додано до '${concept.title}'`);
-            } catch (error) {
-                console.error("Помилка при додаванні концепту:", error);
-                alert("Помилка при додаванні концепту. Перевірте консоль.");
-            }
-        }
+        setShowNewSubclassModal(true);
     };
 
     const handleDeleteConcept = async () => {
@@ -59,7 +64,9 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
 
             <div className="flex items-start gap-4 self-stretch">
                 <DefaultButton
-                    onClick={handleAddConcept}
+                    onClick={() => {
+                        handleAddConcept()
+                    }}
                 >
                     Новий субклас
                 </DefaultButton>
@@ -82,16 +89,24 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
 
                     <div
                         className="flex justify-center items-center gap-2">
-                        <EditCircle className="w-5 h-5" />
-                        <DeleteCircle className="w-5 h-5" />
+                        <EditCircle className="w-5 h-5"/>
+                        <DeleteCircle className="w-5 h-5"/>
                         <p className="text-black font-normal text-base font-inter">Текст</p>
                     </div>
 
                     <div className="flex items-center gap-1">
-                        <AddCircle className="w-5 h-5" />
+                        <AddCircle className="w-5 h-5"/>
                     </div>
                 </div>
             </div>
+            <NewSubConceptModal
+                show={showNewSubclassModal}
+                parentConcept={concept}
+                onClose={() => setShowNewSubclassModal(false)}
+                onCreate={(conceptData) => {
+                    handleCreateSubclass(conceptData);
+                }}
+            />
         </div>
     );
 }

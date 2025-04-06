@@ -17,15 +17,16 @@ function TreeView({treeData, onSelect, loading}) {
 
     const handleSelect = (key, nodeData) => {
         setSelectedNodeKey(key);
+        console.log("TreeView handleSelect:", nodeData.node.title, key);
         onSelect(nodeData.node);
     };
 
     if (loading) {
-        return <div>Завантаження таксономії...</div>;
+        return <div className="px-6">Завантаження таксономії...</div>;
     }
 
     if (!treeData || treeData.length === 0) {
-        return <div className="pl-6">Немає даних для відображення.</div>;
+        return <div className="px-6">Немає даних для відображення.</div>;
     }
 
     return (

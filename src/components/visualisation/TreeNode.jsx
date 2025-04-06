@@ -13,6 +13,7 @@ function TreeNode({ node, onSelect, level, expandedNodes, toggleNode, selectedNo
 
     const handleSelect = () => {
         onSelect(node.key, { node });
+        console.log("TreeNode handleSelect:", node.title, node.key);
     };
 
     const hasChildren = node.children && node.children.length > 0;
@@ -22,7 +23,6 @@ function TreeNode({ node, onSelect, level, expandedNodes, toggleNode, selectedNo
         <div
             className={`tree-node level-${level} flex flex-col gap-2`}
             style={{ paddingLeft: `${level * 32}px` }}
-            onClick={handleSelect}
         >
             <div className="flex items-center gap-4 cursor-pointer">
                 {hasChildren && (
@@ -34,6 +34,7 @@ function TreeNode({ node, onSelect, level, expandedNodes, toggleNode, selectedNo
                     className={`flex items-center px-4 py-1 rounded-md ${
                         isSelected ? "bg-blue text-white" : "bg-gray-100"
                     }`}
+                    onClick={handleSelect}
                 >
                     {node.title}
                 </span>

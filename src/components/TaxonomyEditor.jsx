@@ -1,11 +1,11 @@
 import ConceptDetails from './ConceptDetails';
 import TreeView from "./visualisation/TreeView.jsx";
 import React, {useEffect, useState} from "react";
-import {fetchTaxonomyTree, exportTaxonomy, clearRepository} from '../services/api';
+import {fetchTaxonomyTree, exportTaxonomy, clearRepository, addTopConcept} from '../services/api';
 import EditorHeader from "./headers/EditorHeader.jsx";
 import {useNavigate} from 'react-router-dom';
 import DefaultButton from "./buttons/DefaultButton.jsx";
-
+import NewTopConceptModal from "./modals/NewTopConceptModal.jsx";
 
 function TaxonomyEditor({setTaxonomyData}) {
     const [selectedConcept, setSelectedConcept] = useState(null);
@@ -13,6 +13,7 @@ function TaxonomyEditor({setTaxonomyData}) {
     const [loading, setLoading] = useState(true);
     const [refreshTree, setRefreshTree] = useState(false);
     const navigate = useNavigate();
+    const [showNewConceptModal, setShowNewConceptModal] = useState(false);
 
     useEffect(() => {
         const loadTaxonomy = async () => {
@@ -43,6 +44,7 @@ function TaxonomyEditor({setTaxonomyData}) {
     }, [refreshTree]);
 
     const handleConceptSelect = (concept) => {
+        console.log("TaxonomyEditor handleConceptSelect:", concept.title, concept.key);
         setSelectedConcept(concept);
     };
 
@@ -69,6 +71,19 @@ function TaxonomyEditor({setTaxonomyData}) {
         setRefreshTree(true);
     };
 
+    const addTopLevelConcept = async (conceptData) => {
+        try {
+            await addTopConcept(conceptData.conceptName, conceptData.definition);
+            await refreshTaxonomyTree();
+            alert(`Top concept '${conceptData.conceptName}' successfully added`);
+        } catch (error) {
+            console.error("Error adding top concept:", error);
+            alert("Error adding top concept. Check console.");
+        } finally {
+            setShowNewConceptModal(false);
+        }
+    };
+
     return (
         <div className="h-screen flex flex-col bg-gray-100">
             <EditorHeader onExport={handleExport}
@@ -80,13 +95,23 @@ function TaxonomyEditor({setTaxonomyData}) {
                         onSelect={handleConceptSelect}
                         loading={loading}
                     />
-                    <div className="sticky bottom-0 flex py-8 justify-center items-center self-stretch bg-white">
+                    <div className="sticky bottom-0 flex py-6 justify-center items-center self-stretch bg-white">
                         <DefaultButton
-                            onClick={()=> {}}
+                            onClick={() => {
+                                setShowNewConceptModal(true);
+                            }}
                         >
                             Новий клас
                         </DefaultButton>
                     </div>
+                    <NewTopConceptModal
+                        show={showNewConceptModal}
+                        onClose={() => setShowNewConceptModal(false)}
+                        onCreate={(conceptData) => {
+                            console.log("Creating top-level concept:", conceptData);
+                            addTopLevelConcept(conceptData);
+                        }}
+                    />
                 </div>
                 <ConceptDetails
                     concept={selectedConcept}

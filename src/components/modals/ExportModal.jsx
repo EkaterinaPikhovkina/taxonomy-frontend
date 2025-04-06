@@ -1,7 +1,6 @@
 import React from 'react';
 import CloseIcon from "../icons/CloseIcon.jsx";
 import DefaultButton from "../buttons/DefaultButton.jsx";
-import ArrowDown from "../icons/ArrowDown.jsx";
 
 function ExportModal({show, onClose, onExport}) {
     if (!show) {
@@ -26,7 +25,10 @@ function ExportModal({show, onClose, onExport}) {
 
                 <div className="flex p-6 flex-col items-start gap-6 self-stretch">
                     <div className="flex p-6 flex-col items-start gap-2 self-stretch rounded-[12px] bg-white">
-                        <div className="flex items-center gap-12 self-stretch">
+
+
+
+                        <div className="select-input flex items-center gap-12 self-stretch">
                             <label htmlFor="format"
                                    className="whitespace-nowrap text-black font-normal text-base font-inter">Формат
                                 файлу</label>
@@ -41,8 +43,10 @@ function ExportModal({show, onClose, onExport}) {
                                 </option>
                             </select>
                         </div>
-                    </div>
 
+
+
+                    </div>
 
                     <div className="self-end">
                         <DefaultButton

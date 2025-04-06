@@ -56,9 +56,12 @@ function ImportModal({show, onClose, onImport, setTaxonomyData}) {
 
                 <div className="flex p-6 flex-col items-start gap-6 self-stretch">
                     <div className="flex p-6 flex-col items-start gap-2 self-stretch rounded-[12px] bg-white">
+
+
+
                         <div
                             htmlFor="file-input"
-                            className="flex py-3 px-4 items-center self-stretch border border-dashed border-gray-500 rounded-[6px] cursor-pointer"
+                            className="file-input flex py-3 px-4 items-center self-stretch border border-dashed border-gray-500 rounded-[6px] cursor-pointer"
                             onClick={() => document.getElementById('file-input').click()}
                         >
                             <span className="text-black text-base font-normal leading-normal">
@@ -73,6 +76,9 @@ function ImportModal({show, onClose, onImport, setTaxonomyData}) {
                             />
                         </div>
                         {error && <p className="text-red-500">{error}</p>}
+
+
+
                     </div>
 
                     <div className="self-end">

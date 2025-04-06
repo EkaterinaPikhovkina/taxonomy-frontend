@@ -57,10 +57,22 @@ export const exportTaxonomy = async (format) => {
     }
 };
 
-
-export const addConcept = async (conceptName, parentConceptUri) => {
+export const addTopConcept = async (conceptName, definition) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}add_concept`, {
+        const response = await axios.post(`${API_BASE_URL}add_topconcept`, {
+            concept_name: conceptName,
+            definition: definition
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Помилка при додаванні топ концепту (axios):", error);
+        throw error;
+    }
+};
+
+export const addSubConcept = async (conceptName, parentConceptUri) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}add_subconcept`, {
             concept_name: conceptName,
             parent_concept_uri: parentConceptUri
         });
