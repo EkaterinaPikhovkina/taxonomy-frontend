@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import ArrowRight from "../icons/ArrowRight.jsx";
 import ArrowDown from "../icons/ArrowDown.jsx";
 
-function TreeNode({ node, onSelect, level, expandedNodes, toggleNode, selectedNodeKey }) {
+function TreeNode({node, onSelect, level, expandedNodes, toggleNode, selectedNodeKey}) {
     const [isExpanded, setIsExpanded] = useState(expandedNodes.has(node.key));
+    const hasChildren = node.children && node.children.length > 0;
+    const isSelected = node.key === selectedNodeKey;
 
     const handleToggle = (e) => {
         e.stopPropagation();
@@ -12,29 +14,31 @@ function TreeNode({ node, onSelect, level, expandedNodes, toggleNode, selectedNo
     };
 
     const handleSelect = () => {
-        onSelect(node.key, { node });
+        onSelect(node.key, {node});
         console.log("TreeNode handleSelect:", node.title, node.key);
     };
 
-    const hasChildren = node.children && node.children.length > 0;
-    const isSelected = node.key === selectedNodeKey;
 
     return (
         <div
-            className={`tree-node level-${level} flex flex-col gap-2`}
-            style={{ paddingLeft: `${level * 32}px` }}
+            className={`tree-node level-${level} flex flex-col gap-2 pl-10`}
         >
             <div className="flex items-center gap-4 cursor-pointer">
                 {hasChildren && (
                     <span className="toggle-icon" onClick={handleToggle}>
-                    {isExpanded ? <ArrowDown className="w-6 h-3" /> : <ArrowRight className="w-3 h-6" />}
+                    {isExpanded ? <ArrowDown className="w-6 h-3"/> : <ArrowRight className="w-3 h-6"/>}
                 </span>
                 )}
                 <span
-                    className={`flex items-center px-4 py-1 rounded-md ${
-                        isSelected ? "bg-blue text-white" : "bg-gray-100"
+                    className={`flex items-center px-4 py-1 rounded-md
+                    ${isSelected
+                        ? "bg-blue text-white"
+                        : isExpanded
+                            ? "bg-yellow"
+                            : "bg-gray-100"
                     }`}
                     onClick={handleSelect}
+                    title={node.key}
                 >
                     {node.title}
                 </span>
