@@ -94,3 +94,16 @@ export const deleteConcept = async (conceptUri) => {
         throw error;
     }
 };
+
+export const updateConceptName = async (conceptUri, newConceptName) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}edit_concept_name`, {
+            concept_uri: conceptUri,
+            new_concept_name: newConceptName
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Помилка при оновленні назви концепту (axios):", error);
+        throw error;
+    }
+};

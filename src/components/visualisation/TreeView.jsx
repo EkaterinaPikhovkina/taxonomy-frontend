@@ -29,7 +29,7 @@ function TreeView({treeData, refreshTaxonomyTree, onSelect, loading}) {
         try {
             await addTopConcept(conceptData.conceptName, conceptData.definition);
             refreshTaxonomyTree();
-            alert(`Top concept '${conceptData.conceptName}' successfully added`);
+            console.log(`Top concept '${conceptData.conceptName}' successfully added`);
         } catch (error) {
             console.error("Error adding top concept:", error);
             alert("Error adding top concept. Check console.");

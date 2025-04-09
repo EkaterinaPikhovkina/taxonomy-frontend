@@ -2,22 +2,29 @@ import React, {useState, useEffect} from 'react';
 import EditCircle from "./icons/EditCircle.jsx";
 import AddCircle from "./icons/AddCircle.jsx";
 import DeleteCircle from "./icons/DeleteCircle.jsx";
-import {addSubConcept, deleteConcept} from '../services/api';
+import {addSubConcept, deleteConcept, updateConceptName} from '../services/api';
 import DefaultButton from "./buttons/DefaultButton.jsx";
 import NewSubConceptModal from "./modals/NewSubConceptModal.jsx";
 import DeleteConceptModal from "./modals/DeleteConceptModal.jsx";
+import EditIcon from "./icons/EditIcon.jsx";
+import DefaultInput from "./inputs/DefaultInput.jsx";
 
 
 function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
     const [conceptName, setConceptName] = useState('');
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [tempConceptName, setTempConceptName] = useState('');
+
     const [showNewSubclassModal, setShowNewSubclassModal] = useState(false);
     const [showDeleteConceptModal, setShowDeleteConceptModal] = useState(false);
 
     useEffect(() => {
         if (concept) {
             setConceptName(concept.title);
+            setTempConceptName(concept.title);
         } else {
             setConceptName('');
+            setTempConceptName('');
         }
     }, [concept]);
 
@@ -25,7 +32,7 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
         try {
             await addSubConcept(conceptData.conceptName, concept.key);
             refreshTaxonomyTree();
-            alert(`Subclass '${conceptData.conceptName}' successfully added to '${concept.title}'`);
+            console.log(`Subclass '${conceptData.conceptName}' successfully added to '${concept.title}'`);
         } catch (error) {
             console.error("Error adding subclass:", error);
             alert("Error adding subclass. Check console.");
@@ -44,19 +51,58 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
             await deleteConcept(concept.key);
             refreshTaxonomyTree();
             setSelectedConcept(null);
-            alert(`Концепт '${concept.title}' успішно видалено.`);
+            console.log(`Концепт '${concept.title}' успішно видалено.`);
         } catch (error) {
             console.error("Помилка при видаленні концепту:", error);
             alert("Помилка при видаленні концепту. Перевірте консоль.");
         }
     };
 
+    const handleSaveConceptName = async () => {
+        if (tempConceptName.trim() === "") {
+            alert("Имя концепта не может быть пустым.");
+            return;
+        }
+        if (tempConceptName.trim() === conceptName) {
+            setIsEditingName(false);
+            return;
+        }
+
+        await updateConceptName(concept.key, tempConceptName);
+        setConceptName(tempConceptName);
+        setIsEditingName(false);
+        refreshTaxonomyTree();
+    };
+
+    const handleCancelEditConceptName = () => {
+        setTempConceptName(conceptName);
+        setIsEditingName(false);
+    };
+
     return (
         <div className="flex flex-col items-start gap-6 px-6 py-8 flex-1 h-full bg-white">
-            <h2 className="text-[32px] font-semibold text-black self-stretch font-inter">
-                {conceptName}
-            </h2>
-
+            <div className="flex items-center gap-2">
+                {isEditingName ? (
+                    <input type="text"
+                           className="block w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
+                           value={tempConceptName}
+                           onChange={(e) => setTempConceptName(e.target.value)}
+                           onKeyDown={(e) => {
+                               if (e.key === 'Enter') {
+                                   handleSaveConceptName();
+                               }
+                           }}
+                           onBlur={handleCancelEditConceptName}
+                    />
+                ) : (
+                    <div className="flex items-center gap-4 self-stretch">
+                        <h2 className="text-[32px] font-semibold text-black self-stretch font-inter">
+                            {conceptName}
+                        </h2>
+                        <EditIcon className="w-6 h-6 cursor-pointer" onClick={() => setIsEditingName(true)}/>
+                    </div>
+                )}
+            </div>
             <div className="flex items-start gap-4 self-stretch">
                 <DefaultButton
                     onClick={() => {
@@ -67,8 +113,8 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
                 </DefaultButton>
                 <DefaultButton
                     onClick={
-                    () => setShowDeleteConceptModal(true)
-                }
+                        () => setShowDeleteConceptModal(true)
+                    }
                 >
                     Видалити клас
                 </DefaultButton>
@@ -86,14 +132,17 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
 
                     <div
                         className="flex justify-center items-center gap-2">
-                        <EditCircle className="w-5 h-5"/>
-                        <DeleteCircle className="w-5 h-5"/>
-                        <p className="text-black font-normal text-base font-inter">Текст</p>
+                        <EditCircle className="w-5 h-5 shrink-0"/>
+                        <DeleteCircle className="w-5 h-5 shrink-0"/>
+                        <p className="text-black font-normal text-base font-inter">
+                            {concept.definition || "Визначення відсутнє"}
+                        </p>
                     </div>
 
-                    <div className="flex items-center gap-1">
-                        <AddCircle className="w-5 h-5"/>
-                    </div>
+                    {/*<div className="flex items-center gap-1">*/}
+                    {/*    <AddCircle className="w-5 h-5 shrink-0"/>*/}
+                    {/*</div>*/}
+
                 </div>
             </div>
 
