@@ -21,7 +21,7 @@ function TreeNode({node, onSelect, level, expandedNodes, toggleNode, selectedNod
 
     return (
         <div
-            className={`tree-node level-${level} flex flex-col gap-2 pl-10`}
+            className={`tree-node level-${level} flex flex-col gap-2 px-10`}
         >
             <div className="flex items-center gap-4 cursor-pointer">
                 {hasChildren && (

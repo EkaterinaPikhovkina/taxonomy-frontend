@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import SearchInput from "../inputs/SearchInput.jsx";
 import EditorHeaderButton from "../buttons/EditorHeaderButton.jsx";
 import CloseIcon from "../icons/CloseIcon.jsx";
@@ -7,19 +7,13 @@ import EyeIcon from "../icons/EyeIcon.jsx";
 import { useNavigate } from 'react-router-dom';
 
 
-function EditorHeader({onExport, onClose}) {
+function EditorHeader({searchQuery, onSearchChange, onExport, onClose}) {
     const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState("");
-
-    const handleSearchChange = (newValue) => {
-        console.log(`Search query updated: ${newValue}`);
-        setSearchQuery(newValue);
-    };
 
     return (
         <div
             className="flex items-center justify-between px-18 py-8 bg-blue self-stretch">
-            <SearchInput value={searchQuery} onChange={handleSearchChange}/>
+            <SearchInput value={searchQuery} onChange={onSearchChange}/>
             <div className="flex items-center gap-8">
 
                 <EditorHeaderButton

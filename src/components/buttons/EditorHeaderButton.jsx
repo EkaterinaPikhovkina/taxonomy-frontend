@@ -5,7 +5,7 @@ function EditorHeaderButton({ children, onClick, icon: Icon, iconClassName, ...p
         <button
             onClick={onClick}
             {...props}
-            className="text-white font-inter text-lg font-normal flex items-center"
+            className="text-white font-inter text-lg font-normal flex items-center cursor-pointer"
         >
             {Icon && <Icon className={`${iconClassName}`} />}
             {children}

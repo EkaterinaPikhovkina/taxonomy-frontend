@@ -16,6 +16,7 @@ function TaxonomyEditor({setTaxonomyData}) {
 
     const [showExportModal, setShowExportModal] = useState(false);
     const [showCloseConfirmationModal, setShowCloseConfirmationModal] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         const loadTaxonomy = async () => {
@@ -69,18 +70,30 @@ function TaxonomyEditor({setTaxonomyData}) {
         setRefreshTree(true);
     };
 
+    const handleSearchChange = (newValue) => {
+        setSearchQuery(newValue);
+        // If the selected concept is no longer visible due to filtering, deselect it.
+        // (This logic could be more complex if needed, e.g., checking the filtered tree)
+        // For now, let's keep it simple. Deselection might be handled implicitly if TreeView re-renders.
+    };
+
+
     return (
         <div className="h-screen flex flex-col bg-gray-100">
-            <EditorHeader onExport={() => setShowExportModal(true)}
-                          onClose={() => setShowCloseConfirmationModal(true)}
+            <EditorHeader
+                searchQuery={searchQuery}
+                onSearchChange={handleSearchChange}
+                onExport={() => setShowExportModal(true)}
+                onClose={() => setShowCloseConfirmationModal(true)}
             />
-            <div className="flex px-18 py-0 justify-center items-start gap-6 h-full">
+            <div className="flex px-18 py-0 justify-center items-start gap-6 h-[calc(100%_-_112px)]">
 
                 <TreeView
                     treeData={treeData}
                     refreshTaxonomyTree={refreshTaxonomyTree}
                     onSelect={handleConceptSelect}
                     loading={loading}
+                    searchQuery={searchQuery}
                 />
 
                 <ConceptDetails

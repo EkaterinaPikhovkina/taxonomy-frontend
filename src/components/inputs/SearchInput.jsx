@@ -3,7 +3,7 @@ import { FaSearch } from 'react-icons/fa';
 
 function SearchInput({ value, onChange }) {
     return (
-        <div className="flex items-center w-[471px] px-4 py-3 gap-4 rounded-md bg-gray-100">
+        <div className="flex items-center w-100 px-4 py-3 gap-4 rounded-md bg-gray-100">
             <FaSearch className="text-gray-500" />
             <input
                 type="text"

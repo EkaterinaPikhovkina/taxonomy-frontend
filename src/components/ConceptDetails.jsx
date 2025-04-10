@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import EditCircle from "./icons/EditCircle.jsx";
-import AddCircle from "./icons/AddCircle.jsx";
 import DeleteCircle from "./icons/DeleteCircle.jsx";
 import {addSubConcept, deleteConcept, updateConceptName} from '../services/api';
 import DefaultButton from "./buttons/DefaultButton.jsx";
 import NewSubConceptModal from "./modals/NewSubConceptModal.jsx";
 import DeleteConceptModal from "./modals/DeleteConceptModal.jsx";
 import EditIcon from "./icons/EditIcon.jsx";
-import DefaultInput from "./inputs/DefaultInput.jsx";
 
 
 function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
@@ -80,7 +78,7 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
     };
 
     return (
-        <div className="flex flex-col items-start gap-6 px-6 py-8 flex-1 h-full bg-white">
+        <div className="flex flex-col items-start gap-6 px-6 py-8 flex-1 h-full bg-white overflow-auto">
             <div className="flex items-center gap-2">
                 {isEditingName ? (
                     <input type="text"
@@ -99,7 +97,7 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
                         <h2 className="text-[32px] font-semibold text-black self-stretch font-inter">
                             {conceptName}
                         </h2>
-                        <EditIcon className="w-6 h-6 cursor-pointer" onClick={() => setIsEditingName(true)}/>
+                        <EditIcon className="w-6 h-6 shrink-0 cursor-pointer stroke-gray-500" onClick={() => setIsEditingName(true)}/>
                     </div>
                 )}
             </div>
@@ -130,17 +128,19 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
                         Визначення
                     </p>
 
-                    <div
-                        className="flex justify-center items-center gap-2">
-                        <EditCircle className="w-5 h-5 shrink-0"/>
-                        <DeleteCircle className="w-5 h-5 shrink-0"/>
+                    <div className="flex justify-center gap-2">
+                        <div
+                            className="flex gap-2 py-1">
+                        <EditCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
+                        <DeleteCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
+                        </div>
                         <p className="text-black font-normal text-base font-inter">
                             {concept.definition || "Визначення відсутнє"}
                         </p>
                     </div>
 
                     {/*<div className="flex items-center gap-1">*/}
-                    {/*    <AddCircle className="w-5 h-5 shrink-0"/>*/}
+                    {/*    <AddCircle className="w-5 h-5 shrink-0 cursor-pointer"/>*/}
                     {/*</div>*/}
 
                 </div>

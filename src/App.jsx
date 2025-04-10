@@ -13,7 +13,7 @@ function App() {
           <Routes>
               <Route path="/" element={<HomePage setTaxonomyData={setTaxonomyData} />} />
               <Route path="/editor" element={<TaxonomyEditor taxonomyData={taxonomyData} setTaxonomyData={setTaxonomyData} />} />
-              <Route path="/visualisation" element={<VisualisationPage />} />
+              <Route path="/visualisation" element={<VisualisationPage taxonomyData={taxonomyData}/>} />
           </Routes>
       </BrowserRouter>
   )
