@@ -5,7 +5,7 @@
 
 @theme {
   --font-inter: "Inter", "sans-serif";
-  --color-blue: oklch(53.67% 0.1218 249.8);
+  --color-blue: oklch(0.521 0.151 38.716);
   --color-white: oklch(97.91% 0 0);
   --color-black: oklch(12.21% 0 0);
   --color-gray-100: oklch(94.01% 0 0);

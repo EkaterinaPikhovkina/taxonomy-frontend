@@ -86,7 +86,7 @@ function TaxonomyEditor({setTaxonomyData}) {
                 onExport={() => setShowExportModal(true)}
                 onClose={() => setShowCloseConfirmationModal(true)}
             />
-            <div className="flex px-18 py-0 justify-center items-start gap-6 h-[calc(100%_-_112px)]">
+            <div className="flex px-18 py-0 justify-center items-start gap-6 h-[calc(100%_-_96px)]">
 
                 <TreeView
                     treeData={treeData}

@@ -6,6 +6,8 @@ import DefaultButton from "./buttons/DefaultButton.jsx";
 import NewSubConceptModal from "./modals/NewSubConceptModal.jsx";
 import DeleteConceptModal from "./modals/DeleteConceptModal.jsx";
 import EditIcon from "./icons/EditIcon.jsx";
+import DefaultLabel from "./labels/DefaultLabel.jsx";
+import AddCircle from "./icons/AddCircle.jsx";
 
 
 function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
@@ -20,6 +22,7 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
         if (concept) {
             setConceptName(concept.title);
             setTempConceptName(concept.title);
+            setIsEditingName(false);
         } else {
             setConceptName('');
             setTempConceptName('');
@@ -97,7 +100,8 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
                         <h2 className="text-[32px] font-semibold text-black self-stretch font-inter">
                             {conceptName}
                         </h2>
-                        <EditIcon className="w-6 h-6 shrink-0 cursor-pointer stroke-gray-500" onClick={() => setIsEditingName(true)}/>
+                        <EditIcon className="w-6 h-6 shrink-0 cursor-pointer stroke-gray-500"
+                                  onClick={() => setIsEditingName(true)}/>
                     </div>
                 )}
             </div>
@@ -120,7 +124,7 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
 
             <div className="flex p-4 flex-col items-start gap-4 self-stretch rounded-xl bg-gray-100">
                 <h3 className="text-black font-semibold text-[18px] self-stretch font-inter">
-                    Documentation Properties
+                    Властивості документації
                 </h3>
                 <div
                     className="flex px-3.5 py-2.5 flex-col items-start gap-2 self-stretch rounded-md bg-white">
@@ -128,37 +132,53 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
                         Визначення
                     </p>
 
-                    <div className="flex justify-center gap-2">
-                        <div
-                            className="flex gap-2 py-1">
-                        <EditCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
-                        <DeleteCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
-                        </div>
-                        <p className="text-black font-normal text-base font-inter">
-                            {concept.definition || "Визначення відсутнє"}
-                        </p>
+
+                    <div className="flex flex-col items-start gap-2 self-stretch">
+                        {concept.definitions && Array.isArray(concept.definitions) && concept.definitions.length > 0 ? (
+                            concept.definitions.map((def, index) => (
+                                <div key={`${concept.key}-def-${def.lang || 'none'}-${index}`}
+                                     className="flex items-start gap-2 self-stretch py-1 border-b border-gray-100 last:border-b-0">
+
+                                    <div className="flex gap-1.5 pt-1 flex-shrink-0">
+                                        <EditCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
+                                        <DeleteCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
+                                    </div>
+
+                                    <div className="flex gap-1 items-start">
+                                        <p className="text-black font-normal text-base font-inter">
+                                            <DefaultLabel
+                                                className="mr-0.5 shrink-0">{def.lang || 'none'}</DefaultLabel> {def.value}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            ))
+                        ) : (
+                            <p className="text-gray-500 font-normal text-base font-inter self-stretch py-1">
+                                Визначення відсутні
+                            </p>
+                        )}
                     </div>
 
-                    {/*<div className="flex items-center gap-1">*/}
-                    {/*    <AddCircle className="w-5 h-5 shrink-0 cursor-pointer"/>*/}
-                    {/*</div>*/}
+                    <div className="flex items-center gap-1">
+                        <AddCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
+                    </div>
 
+                    <NewSubConceptModal
+                        show={showNewSubclassModal}
+                        parentConcept={concept}
+                        onClose={() => setShowNewSubclassModal(false)}
+                        onCreate={(conceptData) => {
+                            handleCreateSubclass(conceptData);
+                        }}
+                    />
+                    <DeleteConceptModal
+                        show={showDeleteConceptModal}
+                        onClose={handleDeleteConcept}
+                        onDiscard={() => setShowDeleteConceptModal(false)}
+                    />
                 </div>
             </div>
-
-            <NewSubConceptModal
-                show={showNewSubclassModal}
-                parentConcept={concept}
-                onClose={() => setShowNewSubclassModal(false)}
-                onCreate={(conceptData) => {
-                    handleCreateSubclass(conceptData);
-                }}
-            />
-            <DeleteConceptModal
-                show={showDeleteConceptModal}
-                onClose={handleDeleteConcept}
-                onDiscard={() => setShowDeleteConceptModal(false)}
-            />
         </div>
     );
 }

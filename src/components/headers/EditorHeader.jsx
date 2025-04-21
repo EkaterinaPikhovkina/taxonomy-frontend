@@ -12,7 +12,7 @@ function EditorHeader({searchQuery, onSearchChange, onExport, onClose}) {
 
     return (
         <div
-            className="flex items-center justify-between px-18 py-8 bg-blue self-stretch">
+            className="flex items-center justify-between px-18 py-6 bg-blue self-stretch">
             <SearchInput value={searchQuery} onChange={onSearchChange}/>
             <div className="flex items-center gap-8">
 
