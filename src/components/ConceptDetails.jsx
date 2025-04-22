@@ -124,6 +124,63 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
 
             <div className="flex p-4 flex-col items-start gap-4 self-stretch rounded-xl bg-gray-100">
                 <h3 className="text-black font-semibold text-[18px] self-stretch font-inter">
+                    Lexical Labels
+                </h3>
+                <div
+                    className="flex px-3.5 py-2.5 flex-col items-start gap-2 self-stretch rounded-md bg-white">
+                    <p className="text-black font-semibold text-base font-inter">
+                        Alternative Labels
+                    </p>
+
+                    <div className="flex flex-col items-start gap-2 self-stretch">
+                        {concept.labels && Array.isArray(concept.labels) && concept.labels.length > 0 ? (
+                            concept.labels.map((label, index) => (
+                                <div key={`${concept.key}-label-${label.lang || 'none'}-${index}`}
+                                     className="flex items-start gap-2 self-stretch py-1 border-b border-gray-100 last:border-b-0">
+
+                                    <div className="flex gap-1.5 pt-1 flex-shrink-0">
+                                        <EditCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
+                                        <DeleteCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
+                                    </div>
+
+                                    <div className="flex gap-1 items-start">
+                                        <p className="text-black font-normal text-base font-inter">
+                                            <DefaultLabel
+                                                className="mr-0.5 shrink-0">{label.lang || '?'}</DefaultLabel> {label.value}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            ))
+                        ) : (
+                            <p className="text-gray-500 font-normal text-base font-inter self-stretch py-1">
+                                Labels відсутні
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                        <AddCircle className="w-5 h-5 shrink-0 cursor-pointer"/>
+                    </div>
+
+                    <NewSubConceptModal
+                        show={showNewSubclassModal}
+                        parentConcept={concept}
+                        onClose={() => setShowNewSubclassModal(false)}
+                        onCreate={(conceptData) => {
+                            handleCreateSubclass(conceptData);
+                        }}
+                    />
+                    <DeleteConceptModal
+                        show={showDeleteConceptModal}
+                        onClose={handleDeleteConcept}
+                        onDiscard={() => setShowDeleteConceptModal(false)}
+                    />
+                </div>
+            </div>
+
+            <div className="flex p-4 flex-col items-start gap-4 self-stretch rounded-xl bg-gray-100">
+                <h3 className="text-black font-semibold text-[18px] self-stretch font-inter">
                     Властивості документації
                 </h3>
                 <div
@@ -136,7 +193,7 @@ function ConceptDetails({concept, refreshTaxonomyTree, setSelectedConcept}) {
                     <div className="flex flex-col items-start gap-2 self-stretch">
                         {concept.definitions && Array.isArray(concept.definitions) && concept.definitions.length > 0 ? (
                             concept.definitions.map((def, index) => (
-                                <div key={`${concept.key}-def-${def.lang || 'none'}-${index}`}
+                                <div key={`${concept.key}-def-${def.lang || '?'}-${index}`}
                                      className="flex items-start gap-2 self-stretch py-1 border-b border-gray-100 last:border-b-0">
 
                                     <div className="flex gap-1.5 pt-1 flex-shrink-0">

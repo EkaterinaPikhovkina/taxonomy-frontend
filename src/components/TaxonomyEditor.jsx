@@ -72,9 +72,6 @@ function TaxonomyEditor({setTaxonomyData}) {
 
     const handleSearchChange = (newValue) => {
         setSearchQuery(newValue);
-        // If the selected concept is no longer visible due to filtering, deselect it.
-        // (This logic could be more complex if needed, e.g., checking the filtered tree)
-        // For now, let's keep it simple. Deselection might be handled implicitly if TreeView re-renders.
     };
 
 
