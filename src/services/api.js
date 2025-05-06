@@ -41,6 +41,29 @@ export const importTaxonomyFromFile = async (file) => {
     }
 };
 
+export const createTaxonomyFromCorpusLLM = async (files) => {
+    const formData = new FormData();
+    files.forEach((file) => {
+        // FastAPI expects multiple files under the same key 'files'
+        formData.append('files', file, file.name);
+    });
+
+    try {
+        const response = await axios.post(`${API_BASE_URL}create_taxonomy_from_corpus_llm`, formData, {
+            headers: {
+                // Content-Type is set automatically by browser/axios for FormData
+            },
+            // Potentially long operation, consider timeout
+            // timeout: 180000, // e.g., 3 minutes
+        });
+        return response.data; // Expected: { message: "Таксономія успішно створена..." }
+    } catch (error) {
+        console.error("Помилка при створенні таксономії з корпусу (axios):", error.response ? error.response.data : error.message);
+        const errorMessage = error.response?.data?.detail || error.message || 'Невідома помилка сервера.';
+        throw new Error(errorMessage);
+    }
+};
+
 export const exportTaxonomy = async (format) => {
     try {
         const response = await axios.get(`${API_BASE_URL}export_taxonomy?format=${format}`, {
