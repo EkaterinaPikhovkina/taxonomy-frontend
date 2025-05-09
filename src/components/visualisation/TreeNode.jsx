@@ -32,9 +32,9 @@ function TreeNode({node, onSelect, level, expandedNodes, toggleNode, selectedNod
                 <span
                     className={`flex items-center px-4 py-1 rounded-md
                     ${isSelected
-                        ? "bg-blue text-white"
+                        ? "bg-[rgba(178,255,0,0.80)]"
                         : isExpanded
-                            ? "bg-yellow"
+                            ? "bg-gray-100"
                             : "bg-gray-100"
                     }`}
                     onClick={handleSelect}

@@ -17,7 +17,7 @@ function ExportModal({show, onClose, onExport}) {
             <div className="flex w-[500px] flex-col items-start bg-gray-100">
 
                 <div className="flex px-8 py-4 justify-between items-center self-stretch bg-blue">
-                    <p className="text-white text-lg font-semibold leading-normal">Експорт таксономії</p>
+                    <p className="text-white text-lg font-semibold leading-normal">Export taxonomy</p>
                     <CloseIcon className="w-4 h-4" onClick={() => {
                         onClose();
                     }}/>
@@ -30,8 +30,9 @@ function ExportModal({show, onClose, onExport}) {
 
                         <div className="select-input flex items-center gap-12 self-stretch">
                             <label htmlFor="format"
-                                   className="whitespace-nowrap text-black font-normal text-base font-inter">Формат
-                                файлу</label>
+                                   className="whitespace-nowrap text-black font-normal text-base font-inter">
+                                File format
+                            </label>
                             <select
                                 id="format"
                                 name="format"
@@ -52,7 +53,7 @@ function ExportModal({show, onClose, onExport}) {
                         <DefaultButton
                             onClick={() => handleExport(document.getElementById('format').value)}
                         >
-                            Імпортувати
+                            Export
                         </DefaultButton>
                     </div>
                 </div>

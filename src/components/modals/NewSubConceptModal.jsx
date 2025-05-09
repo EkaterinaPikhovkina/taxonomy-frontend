@@ -5,8 +5,6 @@ import DefaultInput from "../inputs/DefaultInput.jsx";
 
 function NewSubConceptModal({show, onClose, onCreate, parentConcept}) {
     const [conceptName, setConceptName] = useState('');
-    const [definition, setDefinition] = useState('');
-
 
     if (!show) {
         return null;
@@ -20,7 +18,6 @@ function NewSubConceptModal({show, onClose, onCreate, parentConcept}) {
 
         const conceptData = {
             conceptName: conceptName,
-            definition: definition,
             parentConceptUri: parentConcept.key
         };
 
@@ -31,7 +28,6 @@ function NewSubConceptModal({show, onClose, onCreate, parentConcept}) {
         onClose();
 
         setConceptName('');
-        setDefinition('');
     };
 
     return (
@@ -50,9 +46,7 @@ function NewSubConceptModal({show, onClose, onCreate, parentConcept}) {
                         <div className="flex flex-col items-center gap-4 self-stretch">
                             <DefaultInput label="Назва класу *" value={conceptName}
                                           onChange={(e) => setConceptName(e.target.value)}/>
-                            <DefaultInput label="Визначення" value={definition}
-                                          onChange={(e) => setDefinition(e.target.value)}/>
-                        </div>
+                            </div>
                     </div>
 
                     <div className="self-end">

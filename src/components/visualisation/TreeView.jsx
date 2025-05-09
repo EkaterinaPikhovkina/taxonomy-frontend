@@ -1,8 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import TreeNode from './TreeNode';
 import NewTopConceptModal from "../modals/NewTopConceptModal.jsx";
-import DefaultButton from "../buttons/DefaultButton.jsx";
 import {addTopConcept} from "../../services/api.js";
+import ButtonWithIcon from "../buttons/ButtonWithIcon.jsx";
+import AddIcon from "../icons/AddIcon.jsx";
 
 const filterTree = (nodes, query) => {
     if (!query) {
@@ -89,7 +90,7 @@ function TreeView({treeData, refreshTaxonomyTree, onSelect, loading, searchQuery
 
     const addTopLevelConcept = async (conceptData) => {
         try {
-            await addTopConcept(conceptData.conceptName, conceptData.definition);
+            await addTopConcept(conceptData.conceptName);
             refreshTaxonomyTree();
             console.log(`Top concept '${conceptData.conceptName}' successfully added`);
         } catch (error) {
@@ -101,18 +102,22 @@ function TreeView({treeData, refreshTaxonomyTree, onSelect, loading, searchQuery
     };
 
     return (
-        <div className="flex flex-col items-start pt-8 bg-white flex-1 h-full overflow-hidden">
+        <div className="flex flex-col items-start w-180 rounded-md bg-[rgba(248,248,248,0.28)] pt-8 h-full overflow-hidden shadow-[0px_0px_19.3px_0px_rgba(0,0,0,0.11)]">
             {loading ? (
-                <div className="px-6 pb-2">Завантаження таксономії...</div>
+                <div className="px-6 pb-2 text-black font-inter text-sm not-italic font-light leading-normal">Loading...</div>
             ) : (!treeData || treeData.length === 0) ? (
                 <div className="px-6 pb-2">
-                    Таксономія порожня. Додайте новий клас.
+                    <p className="text-black font-inter text-sm not-italic font-light leading-normal">
+                        The taxonomy is empty. Add a new class.
+                    </p>
                 </div>
-            ) : (!filteredData || filteredData.length === 0) && searchQuery ? ( // Check filtered data when searching
+            ) : (!filteredData || filteredData.length === 0) && searchQuery ? (
                 <div className="px-10 pb-2 text-gray-600">
-                    Нічого не знайдено за запитом "{searchQuery}".
+                    <p className="text-black font-inter text-sm not-italic font-light leading-normal">
+                        Nothing found for the query "{searchQuery}".
+                    </p>
                 </div>
-            ): (
+            ) : (
                 <div className="w-full overflow-auto flex-grow">
                     <div className="flex flex-col pb-2 gap-2">
                         {filteredData.map((node) => (
@@ -130,14 +135,15 @@ function TreeView({treeData, refreshTaxonomyTree, onSelect, loading, searchQuery
                 </div>
             )}
 
-            <div className="sticky bottom-0 flex py-6 justify-center items-center self-stretch bg-white">
-                <DefaultButton
+            <div className="sticky bottom-0 flex py-6 justify-center items-center self-stretch">
+                <ButtonWithIcon
                     onClick={() => {
                         setShowNewConceptModal(true);
                     }}
                 >
-                    Новий клас
-                </DefaultButton>
+                    <AddIcon className="w-4 h-4 shrink-0"/>
+                    New class
+                </ButtonWithIcon>
             </div>
 
             <NewTopConceptModal

@@ -80,11 +80,10 @@ export const exportTaxonomy = async (format) => {
     }
 };
 
-export const addTopConcept = async (conceptName, definition) => {
+export const addTopConcept = async (conceptName) => {
     try {
         const response = await axios.post(`${API_BASE_URL}add_topconcept`, {
-            concept_name: conceptName,
-            definition: definition
+            concept_name: conceptName
         });
         return response.data;
     } catch (error) {
@@ -118,15 +117,88 @@ export const deleteConcept = async (conceptUri) => {
     }
 };
 
-export const updateConceptName = async (conceptUri, newConceptName) => {
+export const addConceptLabel = async (conceptUri, value, lang) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}edit_concept_name`, {
+        const response = await axios.post(`${API_BASE_URL}add_concept_label`, {
             concept_uri: conceptUri,
-            new_concept_name: newConceptName
+            literal: { value, lang: lang || null } // Ensure lang is null if empty/undefined
         });
         return response.data;
     } catch (error) {
-        console.error("Помилка при оновленні назви концепту (axios):", error);
-        throw error;
+        console.error("Error adding concept label (axios):", error.response ? error.response.data : error.message);
+        const errorMessage = error.response?.data?.detail || error.message || 'Не вдалося додати мітку.';
+        throw new Error(errorMessage);
+    }
+};
+
+export const deleteConceptLabel = async (conceptUri, value, lang) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}delete_concept_label`, {
+            concept_uri: conceptUri,
+            literal: { value, lang: lang || null }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting concept label (axios):", error.response ? error.response.data : error.message);
+        const errorMessage = error.response?.data?.detail || error.message || 'Не вдалося видалити мітку.';
+        throw new Error(errorMessage);
+    }
+};
+
+export const updateConceptLabel = async (conceptUri, oldLiteral, newLiteral) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}update_concept_label`, {
+            concept_uri: conceptUri,
+            old_literal: { ...oldLiteral, lang: oldLiteral.lang || null },
+            new_literal: { ...newLiteral, lang: newLiteral.lang || null }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error updating concept label (axios):", error.response ? error.response.data : error.message);
+        const errorMessage = error.response?.data?.detail || error.message || 'Не вдалося оновити мітку.';
+        throw new Error(errorMessage);
+    }
+};
+
+export const addConceptDefinition = async (conceptUri, value, lang) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}add_concept_definition`, {
+            concept_uri: conceptUri,
+            literal: { value, lang: lang || null }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error adding concept definition (axios):", error.response ? error.response.data : error.message);
+        const errorMessage = error.response?.data?.detail || error.message || 'Не вдалося додати визначення.';
+        throw new Error(errorMessage);
+    }
+};
+
+export const deleteConceptDefinition = async (conceptUri, value, lang) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}delete_concept_definition`, {
+            concept_uri: conceptUri,
+            literal: { value, lang: lang || null }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting concept definition (axios):", error.response ? error.response.data : error.message);
+        const errorMessage = error.response?.data?.detail || error.message || 'Не вдалося видалити визначення.';
+        throw new Error(errorMessage);
+    }
+};
+
+export const updateConceptDefinition = async (conceptUri, oldLiteral, newLiteral) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}update_concept_definition`, {
+            concept_uri: conceptUri,
+            old_literal: { ...oldLiteral, lang: oldLiteral.lang || null },
+            new_literal: { ...newLiteral, lang: newLiteral.lang || null }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error updating concept definition (axios):", error.response ? error.response.data : error.message);
+        const errorMessage = error.response?.data?.detail || error.message || 'Не вдалося оновити визначення.';
+        throw new Error(errorMessage);
     }
 };

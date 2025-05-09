@@ -5,7 +5,7 @@ function DefaultButton({ children, onClick, disabled, className = "", ...props }
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`flex px-7 py-3 justify-center items-center gap-2.5 rounded-md bg-blue text-white font-semibold text-base font-inter disabled:bg-gray-500  cursor-pointer ${className}`}
+            className={`inline-flex px-7 py-3 justify-center items-center gap-4 rounded-md bg-[rgba(178,255,0,0.60)] shadow-[0px_0px_19.3px_0px_rgba(0,0,0,0.11)] text-[#060606] font-inter text-lg font-light leading-normal hover:bg-[rgba(178,255,0,0.80)] disabled:bg-[rgba(178,255,0,0.30)] cursor-pointer ${className}`}
             {...props}
         >
             {children}

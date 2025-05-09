@@ -12,14 +12,14 @@ function EditorHeader({searchQuery, onSearchChange, onExport, onClose}) {
 
     return (
         <div
-            className="flex items-center justify-between px-18 py-6 bg-blue self-stretch">
+            className="flex items-center justify-between px-18 py-8 self-stretch">
             <SearchInput value={searchQuery} onChange={onSearchChange}/>
             <div className="flex items-center gap-8">
 
                 <EditorHeaderButton
                     onClick={() => navigate('/visualisation')}
                     icon={EyeIcon}
-                    iconClassName="w-8 h-5"
+                    iconClassName="w-9 h-8"
                     title="Візуалізація"
                 >
                 </EditorHeaderButton>
@@ -27,14 +27,14 @@ function EditorHeader({searchQuery, onSearchChange, onExport, onClose}) {
                 <EditorHeaderButton
                     onClick={onExport}
                     icon={ExportIcon}
-                    iconClassName="w-6 h-6"
+                    iconClassName="w-6 h-7"
                     title="Експорт"
                 />
 
                 <EditorHeaderButton
                     onClick={onClose}
                     icon={CloseIcon}
-                    iconClassName="w-5 h-5"
+                    iconClassName="w-6 h-6"
                     title="Закрити"
                 >
                 </EditorHeaderButton>

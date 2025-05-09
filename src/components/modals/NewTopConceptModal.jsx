@@ -5,8 +5,6 @@ import DefaultInput from "../inputs/DefaultInput.jsx";
 
 function NewTopConceptModal({show, onClose, onCreate}) {
     const [conceptName, setConceptName] = useState('');
-    const [definition, setDefinition] = useState('');
-
 
     if (!show) {
         return null;
@@ -19,8 +17,7 @@ function NewTopConceptModal({show, onClose, onCreate}) {
         }
 
         const conceptData = {
-            conceptName: conceptName,
-            definition: definition
+            conceptName: conceptName
         };
 
 
@@ -30,7 +27,6 @@ function NewTopConceptModal({show, onClose, onCreate}) {
         onClose();
 
         setConceptName('');
-        setDefinition('');
     };
 
     return (
@@ -49,8 +45,6 @@ function NewTopConceptModal({show, onClose, onCreate}) {
                         <div className="flex flex-col items-center gap-4 self-stretch">
                             <DefaultInput label="Назва класу *" value={conceptName}
                                           onChange={(e) => setConceptName(e.target.value)}/>
-                            <DefaultInput label="Визначення" value={definition}
-                                          onChange={(e) => setDefinition(e.target.value)}/>
                         </div>
                     </div>
 

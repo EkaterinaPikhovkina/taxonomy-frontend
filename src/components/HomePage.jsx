@@ -90,24 +90,24 @@ function HomePage({setTaxonomyData}) {
 
 
     return (
-        <div className="min-h-screen flex flex-col bg-white">
-            <HomePageHeader title="Taxonomy Builder"/>
-            <div className="flex flex-col items-center justify-center gap-6 flex-1">
-                <HomePageButton
-                    onClick={handleCreateTaxonomy}
-                    disabled={loading}
-                >
-                    {loading ? "Завантаження..." : "Створити нову таксономію"}
-                </HomePageButton>
+        <div className="min-h-screen flex flex-col [background-image:linear-gradient(117deg,_#707E87_0%,_#939DA6_100%)]">
+            <HomePageHeader title="Taxonomy builder"/>
+            <div className="flex flex-col items-center justify-start pt-50 gap-6 flex-1">
                 <HomePageButton
                     onClick={() => setShowImportForm(true)}
                 >
-                    Імпортувати таксономію
+                    Import taxonomy
                 </HomePageButton>
                 <HomePageButton
                     onClick={() => setShowAddFilesForm(true)}
                 >
-                    Створити таксономію з корпусу документів
+                    Upload document corpus
+                </HomePageButton>
+                <HomePageButton
+                    onClick={handleCreateTaxonomy}
+                    disabled={loading}
+                >
+                    {loading ? "Loading..." : "Create new taxonomy"}
                 </HomePageButton>
             </div>
 
